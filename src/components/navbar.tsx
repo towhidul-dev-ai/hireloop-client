@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { cn } from "cn"
 import { MenuIcon, XIcon } from "lucide-react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -21,8 +22,10 @@ const navLinks = [
   { label: "Pricing", href: "/pricing" },
 ] as const
 
-const ctaClassName =
+const ctaClassName = cn(
+  buttonVariants(),
   "h-11 rounded-lg bg-brand px-6 text-[15px] font-medium text-white shadow-[0_4px_12px_-6px_rgba(109,75,255,0.55)] hover:bg-brand-strong"
+)
 
 export function Navbar() {
   return (
@@ -66,7 +69,7 @@ export function Navbar() {
             </Link>
             <Link
               href="/sign-up"
-              className={buttonVariants({ className: ctaClassName })}
+              className={ctaClassName}
             >
               Get Started
             </Link>
@@ -154,9 +157,7 @@ export function Navbar() {
               </Link>
               <Link
                 href="/sign-up"
-                className={buttonVariants({
-                  className: `${ctaClassName} w-full justify-center`,
-                })}
+                className={cn(ctaClassName, "w-full justify-center")}
               >
                 Get Started
               </Link>
