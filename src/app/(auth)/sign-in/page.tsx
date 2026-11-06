@@ -367,7 +367,7 @@ export default function SignInPage() {
               href="/sign-up"
               className="font-medium text-brand-soft transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-soft"
             >
-              Create one
+              Sign Up
             </Link>
           </p>
         </div>

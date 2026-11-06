@@ -225,6 +225,7 @@ import {
   LockIcon,
   MailIcon,
   UserIcon,
+  BriefcaseBusiness,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -238,11 +239,16 @@ const inputClassName =
 
 const passwordInputClassName = `${inputClassName} pr-11`
 
+type UserRole = "seeker" | "recruiter" | "admin"
+
 export default function SignUpPage() {
   const router = useRouter()
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  const [role, setRole] = useState<UserRole>("seeker")
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
@@ -261,6 +267,7 @@ export default function SignUpPage() {
     const confirmPassword = String(
       formData.get("confirmPassword") ?? ""
     )
+
     const acceptedTerms = formData.get("terms") === "on"
 
     // Validate name
@@ -287,9 +294,15 @@ export default function SignUpPage() {
       return
     }
 
-    // Terms validation
+    // Validate terms
     if (!acceptedTerms) {
       setError("Please accept the Terms of Service and Privacy Policy.")
+      return
+    }
+
+    // Validate role
+    if (!["seeker", "recruiter", "admin"].includes(role)) {
+      setError("Please select a valid account type.")
       return
     }
 
@@ -300,6 +313,7 @@ export default function SignUpPage() {
         name,
         email,
         password,
+        role,
         callbackURL: "/",
       })
 
@@ -309,10 +323,11 @@ export default function SignUpPage() {
       }
 
       if (data) {
-        setSuccess("Account created successfully! Redirecting to sign in...")
+        setSuccess("Account created successfully! Redirecting...")
 
         setTimeout(() => {
-          router.push("/sign-in")
+          router.push("/")
+          router.refresh()
         }, 1500)
       }
     } catch (err) {
@@ -325,12 +340,15 @@ export default function SignUpPage() {
 
   return (
     <section className="relative isolate flex flex-1 items-center justify-center overflow-hidden bg-[#040405] px-4 py-12 text-white sm:px-6 sm:py-16">
+
+      {/* Background */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_55%_at_50%_0%,rgba(109,75,255,0.18),transparent_70%)]"
       />
 
       <div className="relative w-full max-w-md">
+
         <div className="rounded-2xl border border-white/10 bg-[#0b0b0f]/90 p-6 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.9)] backdrop-blur-md sm:p-8">
 
           {/* Header */}
@@ -348,7 +366,7 @@ export default function SignUpPage() {
             </p>
           </div>
 
-          {/* Sign Up Form */}
+          {/* Registration Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
             {/* Full Name */}
@@ -399,6 +417,39 @@ export default function SignUpPage() {
                   className={inputClassName}
                 />
               </div>
+            </div>
+
+            {/* Account Role */}
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="role" className="text-[13px] text-white/70">
+                Select account type
+              </Label>
+
+              <div className="relative">
+                <BriefcaseBusiness
+                  aria-hidden
+                  className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-white/35"
+                />
+
+                <select
+                  id="role"
+                  name="role"
+                  value={role}
+                  onChange={(event) =>
+                    setRole(event.target.value as UserRole)
+                  }
+                  disabled={isLoading}
+                  className="h-11 w-full appearance-none rounded-lg border border-white/10 bg-[#111116] pl-10 pr-4 text-sm text-white outline-none transition-colors focus:border-brand-soft"
+                >
+                  <option value="seeker">Job Seeker</option>
+                  <option value="recruiter">Recruiter</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              <p className="text-xs text-white/40">
+                Choose your account type to continue.
+              </p>
             </div>
 
             {/* Password */}
@@ -508,7 +559,7 @@ export default function SignUpPage() {
               </Label>
             </div>
 
-            {/* Error Message */}
+            {/* Error */}
             {error && (
               <div
                 role="alert"
@@ -518,7 +569,7 @@ export default function SignUpPage() {
               </div>
             )}
 
-            {/* Success Message */}
+            {/* Success */}
             {success && (
               <div
                 role="status"
@@ -536,11 +587,13 @@ export default function SignUpPage() {
             >
               {isLoading ? "Creating account..." : "Create account"}
             </Button>
+
           </form>
 
-          {/* Sign In Link */}
+          {/* Sign In */}
           <p className="mt-6 border-t border-white/10 pt-6 text-center text-sm text-white/50">
             Already have an account?{" "}
+
             <Link
               href="/sign-in"
               className="font-medium text-brand-soft transition-colors hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-soft"
@@ -548,6 +601,7 @@ export default function SignUpPage() {
               Sign in
             </Link>
           </p>
+
         </div>
       </div>
     </section>

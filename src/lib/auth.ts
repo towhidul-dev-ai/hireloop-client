@@ -10,12 +10,24 @@ export const auth = betterAuth({
     emailAndPassword: { 
     enabled: true, 
   },
-  socialProviders: { 
-    github: { 
-      clientId: process.env.GITHUB_CLIENT_ID as string, 
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string, 
-    }, 
-  },  
+  user: {
+    additionalFields: {
+      role: {
+        type: ["seeker", "recruiter", "admin"],
+        defaultValue: "seeker",
+        required: true,
+        // Accept the role from sign-up. Note: this trusts the client, so
+        // "admin" should eventually be gated behind an invite or admin plugin.
+        input: true,
+      },
+    },
+  },
+//   socialProviders: { 
+    // github: { 
+    //   clientId: process.env.GITHUB_CLIENT_ID as string, 
+    //   clientSecret: process.env.GITHUB_CLIENT_SECRET as string, 
+    // }, 
+//   },  
   database: mongodbAdapter(db, {
     client,
   }),
