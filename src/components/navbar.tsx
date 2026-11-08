@@ -200,11 +200,6 @@ import {
 
 import { authClient, useSession, } from "@/lib/auth-client";
 
-const navLinks = [
-  { label: "Browse Jobs", href: "/jobs" },
-  { label: "Company", href: "/company" },
-  { label: "Pricing", href: "/pricing" },
-] as const;
 
 const ctaClassName = cn(
   buttonVariants(),
@@ -216,6 +211,14 @@ export function Navbar() {
   const router = useRouter();
 
   const isLoggedIn = !!session?.user;
+
+  const navLinks = [
+  { label: "Browse Jobs", href: "/jobs" },
+  { label: "Company", href: "/company" },
+  { label: "Pricing", href: "/pricing" },
+  { label: "Dashboard", href: `/dashboard/${session?.user.role || 'seeker'}` },
+] as const;
+
 
   const handleSignOut = async () => {
     await authClient.signOut();
