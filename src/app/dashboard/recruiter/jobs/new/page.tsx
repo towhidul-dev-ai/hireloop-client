@@ -32,6 +32,8 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group";
 import { createJob } from "@/lib/actions/jobs";
+import { useRouter } from "next/navigation";
+
 
 // import { createJob } from "@/lib/jobs";
 
@@ -50,6 +52,8 @@ export interface JobData {
   responsibilities: string;
   qualifications: string;
 }
+
+
 
 const jobTypes = [
   "Full-time",
@@ -77,11 +81,15 @@ export default function NewJobPage() {
   const selectClass =
     "h-11 w-full border-white/[0.08] bg-[#202023] text-sm text-white shadow-none";
 
+
+    const router =  useRouter()
   // Submit Job
   const handleSubmit = async (
     e: FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+
+    
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -137,6 +145,7 @@ export default function NewJobPage() {
       setMessage("");
 
       const result = await createJob(jobData);
+      router.push('/dashboard/recruiter/jobs')
 
       setMessage(
         result.message || "Job created successfully!"
