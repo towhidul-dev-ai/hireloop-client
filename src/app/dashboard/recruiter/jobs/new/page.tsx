@@ -46,6 +46,7 @@ export interface JobData {
   isRemote: boolean;
   location: string;
   deadline: string | null;
+  
   minSalary: number | null;
   maxSalary: number | null;
   salaryFrequency: string;

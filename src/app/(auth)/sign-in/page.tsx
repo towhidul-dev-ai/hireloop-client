@@ -155,7 +155,7 @@
 
 import { useState, type FormEvent } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -170,6 +170,9 @@ const inputClassName =
 const passwordInputClassName = `${inputClassName} pr-11`
 
 export default function SignInPage() {
+
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get("redirectTo") ?? "/"
   const router = useRouter()
 
   const [showPassword, setShowPassword] = useState(false)
@@ -195,7 +198,7 @@ export default function SignInPage() {
         email,
         password,
         rememberMe: remember,
-        callbackURL: "/",
+        callbackURL: redirectTo,
       })
 
       if (error) {
@@ -206,7 +209,7 @@ export default function SignInPage() {
       if (data) {
         setSuccess("Login successful! Redirecting...")
 
-        router.replace("/")
+        router.replace(redirectTo)
         router.refresh()
       }
     } catch (err) {

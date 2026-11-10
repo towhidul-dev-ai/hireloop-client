@@ -48,3 +48,14 @@ export const deleteJob = async(jobId: string)=>{
   return res.json()
 }
 
+export async function applyToJob(data){
+  const response = await fetch(`${BASE_URL}/applications`,{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data)
+  })
+  return response.json()
+}
+
