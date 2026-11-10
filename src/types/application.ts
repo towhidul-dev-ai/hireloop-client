@@ -1,4 +1,3 @@
-
 export type ApplicationStatus =
   | "pending"
   | "reviewed"
@@ -7,29 +6,23 @@ export type ApplicationStatus =
   | "accepted";
 
 export interface ApplicationData {
-  _id?: string;
-
-  // Job information
+  _id: string;
   jobId: string;
+  userId: string;
+  email: string;
+
   jobTitle: string;
   companyName: string;
-  category: string;
   jobType: string;
-  location: string;
   isRemote: boolean;
+  location: string;
 
-  // Applicant information
-  applicantId: string;
-  applicantName: string;
-  applicantEmail: string;
-  phone?: string;
+  minSalary: number | null;
+  maxSalary: number | null;
+  salaryFrequency: string;
+  deadline: string | null;
 
-  // Application documents
-  resumeUrl: string;
-  coverLetter: string;
-
-  // Application tracking
-  status: ApplicationStatus;
   appliedAt: string;
-  updatedAt?: string;
+  status: ApplicationStatus;
+  archived: boolean;
 }
